@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const ariUrl = 'https://api.npoint.io/4829d4ab0e96bfab50e7';
+const ariUrl = 'https://api.npoint.io/378e02e8e732bb1ac55b';
 
 
 export async function apirequest() {

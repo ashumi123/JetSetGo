@@ -5,7 +5,8 @@ import { getFlightsListingAction, getFlightsListingSuccess } from "./FlightActio
 function* getFlightsListingSaga({ payload }) {
     try {
       const response = yield call(apirequest);
-      if (response && response.message == "Success") {
+      console.log('response',response);
+      if (response) {
         payload.callback(response);
         yield put(getFlightsListingSuccess(response))
       } else {

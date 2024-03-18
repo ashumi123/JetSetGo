@@ -36,41 +36,43 @@ const Flight = () => {
 
   const getFlightApiCall = () => {
     const callback = (res) => {
-      let codeArr = new Set(
-        res?.data?.result?.flatMap((flight) =>
-          flight?.displayData?.airlines?.map((airline) => airline?.airlineCode)
-        )
-      );
-      setAirlineCode(Array.from(codeArr));
+      let codeArr = [];
+
+      res?.map((flight) => {
+        if (!codeArr.includes(flight?.airline)) codeArr.push(flight?.airline);
+      });
+
+      console.log("codeArr", codeArr);
+      setAirlineCode(codeArr);
     };
     dispatch(getFlightsListingAction({ callback }));
   };
 
   const airLines = (item) => {
-    return item?.map?.((x) => {
+    
       return (
         <View style={styles.rowSpace}>
           <View>
             <TextCompo style={styles.textCenter} bold>
               {"Flight Number"}
             </TextCompo>
-            <TextCompo style={styles.textCenter}>{x?.flightNumber}</TextCompo>
+            <TextCompo style={styles.textCenter}>{item?.flightNumber}</TextCompo>
           </View>
           <View>
             <TextCompo bold style={styles.textCenter}>
               {"Airline Name"}
             </TextCompo>
-            <TextCompo style={styles.textCenter}>{x?.airlineName}</TextCompo>
+            <TextCompo style={styles.textCenter}>{item?.airline}</TextCompo>
           </View>
           <View>
             <TextCompo bold style={styles.textCenter}>
               {"Airline code"}
             </TextCompo>
-            <TextCompo style={styles.textCenter}>{x?.airlineCode}</TextCompo>
+            <TextCompo style={styles.textCenter}>{item?.aircraft}</TextCompo>
           </View>
         </View>
       );
-    });
+    
   };
 
   const sort = () => {
@@ -91,7 +93,7 @@ const Flight = () => {
                 : "sort-amount-asc"
             }
           />
-          <TextCompo bold>Fare</TextCompo>
+          <TextCompo bold>Price</TextCompo>
         </TouchableOpacity>
         <TextCompo large bold>
           Flights List{" "}
@@ -131,26 +133,26 @@ const Flight = () => {
                 >
                   <View style={styles.itemCenter}>
                     <TextCompo bold>
-                      {new Date(item.displayData?.source?.depTime)
+                      {new Date(item.departureTime)
                         .getDay()
                         .toString()
                         .padStart(2, 0)}
                     </TextCompo>
                     <TextCompo>
                       {moment(
-                        new Date(item.displayData?.source?.depTime).getMonth()
+                        new Date(item?.departureTime).getMonth()
                       ).format("MMM")}
                     </TextCompo>
                   </View>
                   <View>
                     <TextCompo bold>
-                      {item.displayData?.source?.airport?.airportCode}
+                      {item?.aircraft}
                     </TextCompo>
                     <TextCompo>
-                      {new Date(item.displayData?.source?.depTime).getHours() +
+                      {new Date(item?.departureTime).getHours() +
                         ":" +
                         new Date(
-                          item.displayData?.source?.depTime
+                          item?.departureTime
                         ).getMinutes()}
                     </TextCompo>
                   </View>
@@ -162,29 +164,29 @@ const Flight = () => {
                   />
                   <View>
                     <TextCompo bold>
-                      {item.displayData?.destination?.airport?.airportCode}
+                      {item.gate}
                     </TextCompo>
                     <TextCompo>
                       {new Date(
-                        item.displayData?.destination?.arrTime
+                        item.arrivalTime
                       ).getHours() +
                         ":" +
                         new Date(
-                          item.displayData?.destination?.arrTime
+                          item.arrivalTime
                         ).getMinutes()}
                     </TextCompo>
                   </View>
                 </View>
               </View>
-              {airLines(item?.displayData?.airlines)}
+              {airLines(item)}
               <View style={styles.rowSpace}>
                 <TextCompo textColor={"navy"} bold>
-                  {item.displayData?.totalDuration}
+                  {item.duration}
                 </TextCompo>
                 <TextCompo
                   textColor={"navy"}
                   bold
-                >{`₹ ${item?.fare}`}</TextCompo>
+                >{`₹ ${item?.price}`}</TextCompo>
               </View>
             </View>
           );
