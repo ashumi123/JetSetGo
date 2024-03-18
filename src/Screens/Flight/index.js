@@ -144,16 +144,16 @@ const Flight = () => {
                       ).format("MMM")}
                     </TextCompo>
                   </View>
-                  <View>
+                  <View style={{alignItems:'center'}}>
                     <TextCompo bold>
-                      {item?.aircraft}
+                      {item.origin}
                     </TextCompo>
                     <TextCompo>
-                      {new Date(item?.departureTime).getHours() +
+                      {new Date(item?.departureTime).getHours().toString().padStart(2,0) +
                         ":" +
                         new Date(
                           item?.departureTime
-                        ).getMinutes()}
+                        ).getMinutes().toString().padStart(2,0)}
                     </TextCompo>
                   </View>
                   <VectorIcon
@@ -162,18 +162,18 @@ const Flight = () => {
                     size={40}
                     color="black"
                   />
-                  <View>
+                  <View style={{alignItems:'center'}}>
                     <TextCompo bold>
-                      {item.gate}
+                      {item.destination}
                     </TextCompo>
                     <TextCompo>
                       {new Date(
                         item.arrivalTime
-                      ).getHours() +
+                      ).getHours().toString().padStart(2,0) +
                         ":" +
                         new Date(
                           item.arrivalTime
-                        ).getMinutes()}
+                        ).getMinutes().toString().padStart(2,0)}
                     </TextCompo>
                   </View>
                 </View>
